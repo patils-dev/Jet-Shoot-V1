@@ -128,17 +128,22 @@ class Bubble
   {
         this.canvas = null;
         this.ctx=null;
-        // this.width = window.innerWidth;
-        // this.height = window.innerHeight;
+        this.width = null;
+        this.height = null;
         this.scale = 1;
         this.offset = {top: 0, left: 0};
         this.bubbles=[];
+        this.x=null;
+        this.y=null;
+        this.r=null;
   }
   init()
   {
     this.canvas = document.getElementById('game-area');
     this.canvas.height=window.innerHeight;
     this.canvas.width=window.innerWidth;
+    this.width=this.canvas.width;
+    this.height=this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
 
     this.offset.top = this.canvas.offsetTop;
@@ -149,86 +154,71 @@ class Bubble
   }
   render(){
 
-    for(let i=0;i<10;i++)
-    {
-      let r=Math.floor(Math.random()*30);
-      let x=Math.floor(Math.random()*400);
-      let y=this.canvas.height;
+    // for(let i=0;i<10;i++)
+    // {
+      
+      this.r=Math.floor(Math.random()*30);
+      this.x=Math.floor(Math.random()*400);
+      this.y=100;
       let Inp=new Input(bub);
-      Inp.circle(x,y,r)
-    }
-    // ctx.arc(this.x,this.y,this.r,0,2*Math.PI);
-    // POP.Draw.rect(0, 0, POP.WIDTH, POP.HEIGHT, '#036');
-
-    // display snazzy wave effect
-    // for (let i = 0; i < POP.wave.total; i++) {
-
-    //     POP.Draw.circle(
-    //                 POP.wave.x + POP.wave.offset +  (i * POP.wave.r), 
-    //                 POP.wave.y,
-    //                 POP.wave.r,
-    //                 '#fff');
+      Inp.circle(this.x,this.y,this.r)
+      this.update();
     // }
 
-    //     // cycle through all entities and render to canvas
-    //     for (i = 0; i < POP.entities.length; i += 1) {
-    //         POP.entities[i].render();
-    // }
-
-    // // display scores
-    // POP.Draw.text('Hit: ' + POP.score.hit, 20, 30, 14, '#fff');
-    // POP.Draw.text('Escaped: ' + POP.score.escaped, 20, 50, 14, '#fff');
-    // POP.Draw.text('Accuracy: ' + POP.score.accuracy + '%', 20, 70, 14, '#fff');
 
   }
+  update(){
 
+    let Inp=new Input(bub);
+    this.x+=1;
+    Inp.circle(this.x,this.y,this.r)
+    this.render();
+    console.log("draaw");
+  }
 
 }
 
 class Input{
 
-  constructor(){
-    this.x= 0;
-    this.y=0;
-    this.tapped=false;
-  }
+    constructor(){
+      this.x= 0;
+      this.y=0;
+      this.tapped=false;
+    }
 
-  set(data) {
-      this.x = (data.pageX - bub.offset.left) / bub.scale;
-      this.y = (data.pageY - bub.offset.top) / bub.scale;
-      this.tapped = true;
-      console.log(this.x);
-      console.log(this.y);
-  }
+    set(data) {
+        this.x = (data.pageX - bub.offset.left) / bub.scale;
+        this.y = (data.pageY - bub.offset.top) / bub.scale;
+        this.tapped = true;
+        console.log(this.x);
+        console.log(this.y);
+    }
 
-  clear(){
+    clear(){
     bub.ctx.clearRect(0, 0, bub.width, bub.height);
     }
 
-
-    rect(x, y, w, h, col){
-        bub.ctx.fillStyle = col;
-        bub.ctx.fillRect(x, y, w, h);
-    }
-
     circle(x, y, r) {
+      // bub.ctx.clearRect(0,0,bub.canvas.width,bub.canvas.height); 
         bub.ctx.fillStyle = "blue";
         bub.ctx.beginPath();
         bub.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
         bub.ctx.closePath();
         bub.ctx.fill();
     }
+
 }
 
 window.onload=function(){
   bub=new Bubble();
   bub.init();
   bub.render();
+  // bub.update();
   window.addEventListener('click', function(e) {
     e.preventDefault();
     let Inp=new Input(bub);
     Inp.set(e);
-    Inp.circle()
+    // Inp.circle()
     // this.Input.set(e);
   }, false);
 
