@@ -64,56 +64,141 @@
 // // }
 // init();
 
-class Bubble{
-    constructor(x,y,r)
-    {
-      this.x=x;
-      this.y=y;
-      this.r=r
-    }
-    putPlayer(canvasCtx,a,b){
-       let p=new Image();
-       p.src=(this.type==='player-1')?'images/player-1.png':'images/player-2.png';
-       p.onload=()=>{
-         canvasCtx.drawImage(p,a,b);
-       }
-     }
-     draw(canvasCtx)
-    {
-            // console.log("hagsdh");
-            // canvasCtx.clearRect(0,0,canvasCtx.width,canvasCtx.height);
-            this.y=this.y-3;
-            canvasCtx.beginPath();
-            canvasCtx.arc(this.x,this.y,this.r,0,Math.PI*2,false);
-            canvasCtx.fillStyle="blue";
-            canvasCtx.fill();
-            // console.log("hagsdh");
-    }
-  }
-class Game
+//try1
+
+// class Bubble{
+//     constructor(x,y,r)
+//     {
+//       this.x=x;
+//       this.y=y;
+//       this.r=r
+//     }
+//     putPlayer(canvasCtx,a,b){
+//        let p=new Image();
+//        p.src=(this.type==='player-1')?'images/player-1.png':'images/player-2.png';
+//        p.onload=()=>{
+//          canvasCtx.drawImage(p,a,b);
+//        }
+//      }
+//      draw(canvasCtx)
+//     {
+//             // console.log("hagsdh");
+//             // canvasCtx.clearRect(0,0,canvasCtx.width,canvasCtx.height);
+//             this.y=this.y-3;
+//             canvasCtx.beginPath();
+//             canvasCtx.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+//             canvasCtx.fillStyle="blue";
+//             canvasCtx.fill();
+//             // console.log("hagsdh");
+//     }
+//   }
+// class Game
+// {
+//     constructor(canvas,width, height){
+//         this.canvas = canvas;
+//         this.width = width;
+//         this.height = height;
+//         canvas.width = width;
+//         canvas.height = height;
+//         this.bubbles=[];
+//         // this.goblin=[];
+//         this.ctx = canvas.getContext('2d');
+//         // document.addEventListener('keydown',this.keyPress.bind(this));
+//         // document.addEventListener('keyup',this.keyPress.bind(this));
+//     }
+//     createBubble(){
+//         let x=Math.random()*this.canvas.width+60;
+//         let r=30;
+//         let y=window.innerHeight;
+//         let b=new Bubble(x,y,r);
+//         b.draw(this.ctx);
+//         // this.bubbles.push(b);
+//         // window.requestAnimationFrame(this.createBubble())
+//       }
+// }
+// let bubbleShoot=document.getElementById('game-area');
+// let game=new Game(bubbleShoot,550,550);
+// game.createBubble()
+
+//try2
+
+class Bubble
 {
-    constructor(canvas,width, height){
-        this.canvas = canvas;
-        this.width = width;
-        this.height = height;
-        canvas.width = width;
-        canvas.height = height;
+  constructor()
+  {
+        this.canvas = null;
+        this.ctx=null;
+        this.width = 500;
+        this.height = 500;
+        this.scale = 1;
+        this.offset = {top: 0, left: 0};
         this.bubbles=[];
-        // this.goblin=[];
-        this.ctx = canvas.getContext('2d');
-        // document.addEventListener('keydown',this.keyPress.bind(this));
-        // document.addEventListener('keyup',this.keyPress.bind(this));
-    }
-    createBubble(){
-        let x=Math.random()*this.canvas.width+60;
-        let r=30;
-        let y=window.innerHeight;
-        let b=new Bubble(x,y,r);
-        b.draw(this.ctx);
-        // this.bubbles.push(b);
-        // window.requestAnimationFrame(this.createBubble())
-      }
+  }
+  init()
+  {
+    this.canvas = document.getElementById('game-area');
+    this.ctx = this.canvas.getContext('2d');
+
+    this.offset.top = this.canvas.offsetTop;
+    this.offset.left = this.canvas.offsetLeft;
+    console.log(this.offset.top);
+    console.log(this.offset.left)
+
+  }
+  
 }
-let bubbleShoot=document.getElementById('game-area');
-let game=new Game(bubbleShoot,550,550);
-game.createBubble()
+
+class Input{
+
+  constructor(){
+    this.x= 0;
+    this.y=0;
+    this.tapped=false;
+  }
+
+  set(data) {
+      this.x = (data.pageX - bub.offset.left) / bub.scale;
+      this.y = (data.pageY - bub.offset.top) / bub.scale;
+      this.tapped = true;
+      console.log(this.x);
+      console.log(this.y);
+  }
+
+  clear(){
+    POP.ctx.clearRect(0, 0, POP.WIDTH, POP.HEIGHT);
+    }
+
+
+    rect(x, y, w, h, col){
+        POP.ctx.fillStyle = col;
+        POP.ctx.fillRect(x, y, w, h);
+    }
+
+    circle(x, y, r, col) {
+        POP.ctx.fillStyle = col;
+        POP.ctx.beginPath();
+        POP.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
+        POP.ctx.closePath();
+        POP.ctx.fill();
+    }
+}
+
+  // text(string, x, y, size, col) {
+  //     POP.ctx.font = 'bold '+size+'px Monospace';
+  //     POP.ctx.fillStyle = col;
+  //     POP.ctx.fillText(string, x, y);
+  // }
+
+
+
+window.onload=function(){
+  bub=new Bubble();
+  bub.init();
+  window.addEventListener('click', function(e) {
+    e.preventDefault();
+    Inp=new Input(bub);
+    Inp.set(e);
+    // this.Input.set(e);
+  }, false);
+ 
+}
