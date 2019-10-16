@@ -145,7 +145,36 @@ class Bubble
     console.log(this.offset.left)
 
   }
-  
+  render(){
+
+    let Inp=new Input(bub);
+    Inp.circle(100,100,30)
+    // ctx.arc(this.x,this.y,this.r,0,2*Math.PI);
+    // POP.Draw.rect(0, 0, POP.WIDTH, POP.HEIGHT, '#036');
+
+    // display snazzy wave effect
+    // for (let i = 0; i < POP.wave.total; i++) {
+
+    //     POP.Draw.circle(
+    //                 POP.wave.x + POP.wave.offset +  (i * POP.wave.r), 
+    //                 POP.wave.y,
+    //                 POP.wave.r,
+    //                 '#fff');
+    // }
+
+    //     // cycle through all entities and render to canvas
+    //     for (i = 0; i < POP.entities.length; i += 1) {
+    //         POP.entities[i].render();
+    // }
+
+    // // display scores
+    // POP.Draw.text('Hit: ' + POP.score.hit, 20, 30, 14, '#fff');
+    // POP.Draw.text('Escaped: ' + POP.score.escaped, 20, 50, 14, '#fff');
+    // POP.Draw.text('Accuracy: ' + POP.score.accuracy + '%', 20, 70, 14, '#fff');
+
+  }
+
+
 }
 
 class Input{
@@ -165,40 +194,38 @@ class Input{
   }
 
   clear(){
-    POP.ctx.clearRect(0, 0, POP.WIDTH, POP.HEIGHT);
+    bub.ctx.clearRect(0, 0, bub.width, bub.height);
     }
 
 
     rect(x, y, w, h, col){
-        POP.ctx.fillStyle = col;
-        POP.ctx.fillRect(x, y, w, h);
+        bub.ctx.fillStyle = col;
+        bub.ctx.fillRect(x, y, w, h);
     }
 
-    circle(x, y, r, col) {
-        POP.ctx.fillStyle = col;
-        POP.ctx.beginPath();
-        POP.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
-        POP.ctx.closePath();
-        POP.ctx.fill();
+    circle(x, y, r) {
+        bub.ctx.fillStyle = "blue";
+        bub.ctx.beginPath();
+        bub.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
+        bub.ctx.closePath();
+        bub.ctx.fill();
     }
 }
 
-  // text(string, x, y, size, col) {
-  //     POP.ctx.font = 'bold '+size+'px Monospace';
-  //     POP.ctx.fillStyle = col;
-  //     POP.ctx.fillText(string, x, y);
-  // }
+
 
 
 
 window.onload=function(){
   bub=new Bubble();
   bub.init();
+  bub.render();
   window.addEventListener('click', function(e) {
     e.preventDefault();
-    Inp=new Input(bub);
+    let Inp=new Input(bub);
     Inp.set(e);
+    Inp.circle()
     // this.Input.set(e);
   }, false);
- 
+
 }
